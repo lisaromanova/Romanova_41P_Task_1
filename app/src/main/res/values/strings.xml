@@ -1,5 +1,12 @@
 <resources>
-    <string name="app_name">Romanova_41P_Task_1</string>
+    <string name="app_name">Магазин книг</string>
     <string name="AddData">Добавить</string>
-    <string name="ViewData">Просмотр</string>
+    <string name="ViewData">Показать</string>
+    <string name="NameBook">Название</string>
+    <string name="Author">Автор</string>
+    <string name="Genre">Жанр</string>
+    <string name="Cost">Стоимость</string>
+    <string name="Back">Назад</string>
+    <string name="Header">Книги</string>
+    <string name="AddBook">Добавление книги</string>
 </resources>

@@ -8,31 +8,55 @@
 
     <TableLayout
         android:id="@+id/tbBooks"
-        android:layout_width="412dp"
-        android:layout_height="443dp"
-        android:layout_marginTop="15dp"
+        android:layout_width="0dp"
+        android:layout_height="430dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/btnView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/txtHeaderView" />
 
-    <Button
+    <android.widget.Button
         android:id="@+id/btnView"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/btn_background"
         android:onClick="GetTextFromSql"
         android:text="@string/ViewData"
+
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnAdd"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tbBooks" />
 
-    <Button
+    <android.widget.Button
         android:id="@+id/btnAdd"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/btn_background"
+        android:onClick="GoAddData"
         android:text="@string/AddData"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btnView"
         app:layout_constraintTop_toBottomOf="@+id/tbBooks" />
+
+    <TextView
+        android:id="@+id/txtHeaderView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="@string/Header"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tbBooks"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
