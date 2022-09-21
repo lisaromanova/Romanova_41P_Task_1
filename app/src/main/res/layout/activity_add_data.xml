@@ -54,11 +54,12 @@
         android:id="@+id/btnAddData"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:background="@drawable/btn_background"
         android:onClick="AddDataMethod"
         android:text="@string/AddData"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnDelete"
         app:layout_constraintEnd_toStartOf="@+id/btnBack"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/AddCost" />
@@ -67,11 +68,12 @@
         android:id="@+id/btnBack"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:background="@drawable/btn_background"
         android:onClick="GoViewData"
         android:text="@string/Back"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnDelete"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btnAddData"
         app:layout_constraintTop_toBottomOf="@+id/AddCost" />
@@ -89,5 +91,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <android.widget.Button
+        android:id="@+id/btnDelete"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/btn_background"
+        android:onClick="DeleteData"
+        android:text="@string/Delete"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/AddCost" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

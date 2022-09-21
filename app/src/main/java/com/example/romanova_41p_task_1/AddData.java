@@ -52,6 +52,9 @@ public class AddData extends AppCompatActivity {
                 Log.e(ConnectionResult, ex.getMessage());
                 Toast.makeText(this, "Ошибка", Toast.LENGTH_LONG).show();
             }
+        }else{
+            Button btnDelete = findViewById(R.id.btnDelete);
+            btnDelete.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -95,6 +98,26 @@ public class AddData extends AppCompatActivity {
             }
     }
 
+    public void DeleteData(View v){
+        try{
+            ConnectionHelper connectionHelper = new ConnectionHelper();
+            connection = connectionHelper.connectionClass();
+            if(connection!=null){
+                String query = "Delete From Books Where ID_book="+id;
+                Statement statement = connection.createStatement();
+                statement.executeUpdate(query);
+                Toast.makeText(this, "Запись успешно удалена!", Toast.LENGTH_LONG).show();
+                GoViewData(v);
+            }
+            else{
+                ConnectionResult="Check connection";
+            }
+        }
+        catch(Exception ex){
+            Log.e(ConnectionResult, ex.getMessage());
+            Toast.makeText(this, "Ошибка", Toast.LENGTH_LONG).show();
+        }
+    }
 
 
     public void GoViewData(View v){

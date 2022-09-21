@@ -5,38 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-    <TableLayout
-        android:id="@+id/tbBooks"
-        android:layout_width="0dp"
-        android:layout_height="430dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/btnView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtHeaderView"
-        />
 
     <android.widget.Button
         android:id="@+id/btnView"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+
         android:layout_marginBottom="30dp"
         android:background="@drawable/btn_background"
         android:onClick="GetTextFromSql"
         android:text="@string/ViewData"
-
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnAdd"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tbBooks" />
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
 
     <android.widget.Button
         android:id="@+id/btnAdd"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:layout_marginBottom="30dp"
         android:background="@drawable/btn_background"
         android:onClick="GoAddData"
@@ -45,18 +35,40 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btnView"
-        app:layout_constraintTop_toBottomOf="@+id/tbBooks" />
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
 
     <TextView
         android:id="@+id/txtHeaderView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="50dp"
         android:text="@string/Header"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/tbBooks"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtHeaderView">
+
+        <TableLayout
+            android:id="@+id/tbBooks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:textAlignment="center" />
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

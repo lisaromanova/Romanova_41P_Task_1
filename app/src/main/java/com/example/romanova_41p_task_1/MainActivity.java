@@ -41,17 +41,21 @@ public class MainActivity extends AppCompatActivity {
             TableRow trHeader = new TableRow(MainActivity.this);
 
             TextView NameHeader = new TextView(MainActivity.this);
+            trHeader.addView(NameHeader, new TableRow.LayoutParams(
+                    TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1.f));
             TextView AuthorHeader = new TextView(MainActivity.this);
+            trHeader.addView(AuthorHeader, new TableRow.LayoutParams(
+                    TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1.f));
             TextView CostHeader = new TextView(MainActivity.this);
+            trHeader.addView(CostHeader, new TableRow.LayoutParams(
+                    TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1.f));
+            TextView btnHeader = new TextView(MainActivity.this);
+            trHeader.addView(btnHeader, new TableRow.LayoutParams(
+                    TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1.f));
             NameHeader.setText("Название");
             AuthorHeader.setText("Автор");
             CostHeader.setText("Цена");
-            trHeader.addView(NameHeader, new TableRow.LayoutParams(
-                    TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 0.5f));
-            trHeader.addView(AuthorHeader, new TableRow.LayoutParams(
-                    TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 0.5f));
-            trHeader.addView(CostHeader, new TableRow.LayoutParams(
-                    TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 0.5f));
+            btnHeader.setText("Перейти");
             Books.addView(trHeader);
             if(connection!=null){
                 String query = "Select * From Books";
@@ -59,28 +63,32 @@ public class MainActivity extends AppCompatActivity {
                 ResultSet resultSet = statement.executeQuery(query);
                 while(resultSet.next()){
                     TableRow tr = new TableRow(MainActivity.this);
-                    tr.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                    TableRow.LayoutParams params = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
-
+                    tr.setLayoutParams(new TableRow.LayoutParams(
+                            TableRow.LayoutParams.WRAP_CONTENT,TableRow.LayoutParams.WRAP_CONTENT));
+                    tr.setMinimumHeight(150);
                     TextView Name = new TextView(MainActivity.this);
-                    params.weight = 3.0f;
-                    Name.setLayoutParams(params);
-                    tr.addView(Name);
+                    Name.setWidth(330);
+                    //tr.addView(Name, new TableRow.LayoutParams(
+                            //TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
                     TextView Author = new TextView(MainActivity.this);
-                    params.weight = 2.0f;
-                    Author.setLayoutParams(params);
-                    tr.addView(Author);
+                    Author.setWidth(210);
+                    //tr.addView(Author, new TableRow.LayoutParams(
+                            //TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1.f));
                     TextView Cost = new TextView(MainActivity.this);
-                    params.weight = 1.0f;
-                    Cost.setLayoutParams(params);
-                    tr.addView(Cost);
+                    Cost.setWidth(150);
+                    //tr.addView(Cost, new TableRow.LayoutParams(
+                            //TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1.f));
                     Button btnUpdate = new Button(MainActivity.this);
-                    btnUpdate.setLayoutParams(params);
-                    tr.addView(btnUpdate);
+                    btnUpdate.setWidth(30);
                     Resources resources = getResources();
                     btnUpdate.setBackground(resources.getDrawable(R.drawable.btn_background));
-                    btnUpdate.setText("Обновить");
-                    btnUpdate.setTextSize(12);
+                    btnUpdate.setText("-->");
+                    //tr.addView(btnUpdate, new TableRow.LayoutParams(
+                            //TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1.f));
+                    tr.addView(Name);
+                    tr.addView(Author);
+                    tr.addView(Cost);
+                    tr.addView(btnUpdate);
                     btnUpdate.setTextColor(resources.getColor(R.color.white));
                     int id = Integer.parseInt(resultSet.getString(1));
                     btnUpdate.setOnClickListener(new View.OnClickListener() {
