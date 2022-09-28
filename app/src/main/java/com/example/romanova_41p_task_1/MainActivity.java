@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        View v = findViewById(com.google.android.material.R.id.ghost_view);
+        GetTextFromSql(v);
     }
 
     public void GoAddData(View v){
