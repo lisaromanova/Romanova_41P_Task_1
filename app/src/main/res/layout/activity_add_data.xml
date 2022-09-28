@@ -57,7 +57,7 @@
         android:layout_marginTop="30dp"
         android:background="@drawable/btn_background"
         android:onClick="AddDataMethod"
-        android:text="@string/AddData"
+        android:text="@string/EnterData"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/btnDelete"
         app:layout_constraintEnd_toStartOf="@+id/btnBack"

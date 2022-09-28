@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -18,6 +19,8 @@ import java.net.IDN;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     Connection connection;
@@ -34,7 +37,35 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(this, AddData.class));
     }
     public void GetTextFromSql(View v){
-        TableLayout Books = findViewById(R.id.tbBooks);
+        List<Books> data = new ArrayList<Books>();
+        ListView lstView = findViewById(R.id.listBooks);
+        AdapterBooks adapterBooks = new AdapterBooks(MainActivity.this,data);
+        try{
+            ConnectionHelper connectionHelper = new ConnectionHelper();
+            connection = connectionHelper.connectionClass();
+            if(connection!=null){
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery("Select * From Books");
+                while(resultSet.next()){
+                    Books tempBook = new Books
+                            (
+                           Integer.parseInt(resultSet.getString("ID_book")),
+                           resultSet.getString("Name_book"),
+                            resultSet.getString("Author"),
+                            Float.parseFloat(resultSet.getString("Price")),
+                            resultSet.getString("Image")
+                    );
+                    data.add(tempBook);
+                    adapterBooks.notifyDataSetInvalidated();
+                }
+                connection.close();
+            }
+            lstView.setAdapter(adapterBooks);
+        }
+        catch(Exception ex){
+
+        }
+        /*TableLayout Books = findViewById(R.id.tbBooks);
 
         try{
             ConnectionHelper connectionHelper = new ConnectionHelper();
@@ -104,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         }
         catch(Exception ex){
             Log.e(ConnectionResult, ex.getMessage());
-        }
+        }*/
     }
 
 }

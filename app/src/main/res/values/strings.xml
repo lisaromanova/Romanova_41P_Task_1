@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Магазин книг</string>
     <string name="AddData">Добавить запись</string>
+    <string name="EnterData">Добавить</string>
     <string name="ViewData">Показать</string>
     <string name="NameBook">Название</string>
     <string name="Author">Автор</string>
