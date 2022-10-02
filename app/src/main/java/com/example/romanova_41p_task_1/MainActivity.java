@@ -24,7 +24,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     Connection connection;
-    String ConnectionResult="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

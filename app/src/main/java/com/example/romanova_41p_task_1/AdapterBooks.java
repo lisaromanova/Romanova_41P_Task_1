@@ -1,6 +1,9 @@
 package com.example.romanova_41p_task_1;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -20,17 +23,27 @@ public class AdapterBooks extends BaseAdapter{
 
     @Override
     public int getCount() {
-        return 0;
+        return booksList.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return null;
+        return booksList.get(i);
     }
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return booksList.get(i).getId();
+    }
+
+    private Bitmap getUserImage(String encodedImg)
+    {
+        if(encodedImg!=null&& !encodedImg.equals("null")) {
+            byte[] bytes = Base64.decode(encodedImg, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        }
+        else
+            return null;
     }
 
     @Override
@@ -40,10 +53,12 @@ public class AdapterBooks extends BaseAdapter{
         TextView Author = v.findViewById(R.id.txtAuthor);
         TextView Cost = v.findViewById(R.id.txtCost);
         ImageView Img = v.findViewById(R.id.img);
-        Books book = booksList.get(1);
+        Books book = booksList.get(i);
         Name_book.setText(book.getName_book());
         Author.setText(book.getAuthor());
         Cost.setText(Float.toString(book.getCost()));
-        return null;
+        Img.setImageBitmap(getUserImage(book.getImage()));
+
+        return v;
     }
 }
