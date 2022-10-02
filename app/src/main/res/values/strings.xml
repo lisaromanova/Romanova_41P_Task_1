@@ -11,4 +11,5 @@
     <string name="Header">Книги</string>
     <string name="Delete">Удалить запись</string>
     <string name="AddBook">Добавление книги</string>
+    <string name="GoToBook">--></string>
 </resources>

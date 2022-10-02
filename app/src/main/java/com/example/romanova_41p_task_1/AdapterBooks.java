@@ -1,12 +1,14 @@
 package com.example.romanova_41p_task_1;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -43,7 +45,7 @@ public class AdapterBooks extends BaseAdapter{
             return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         }
         else
-            return null;
+            return BitmapFactory.decodeResource(AdapterBooks.this.mContext.getResources(), R.drawable.picture);
     }
 
     @Override
@@ -58,7 +60,6 @@ public class AdapterBooks extends BaseAdapter{
         Author.setText(book.getAuthor());
         Cost.setText(Float.toString(book.getCost()));
         Img.setImageBitmap(getUserImage(book.getImage()));
-
         return v;
     }
 }
