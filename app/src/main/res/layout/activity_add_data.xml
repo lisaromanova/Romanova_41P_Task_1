@@ -54,7 +54,7 @@
         android:id="@+id/btnAddData"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="60dp"
         android:background="@drawable/btn_background"
         android:onClick="AddDataMethod"
         android:text="@string/EnterData"
@@ -62,13 +62,13 @@
         app:layout_constraintBottom_toTopOf="@+id/btnDelete"
         app:layout_constraintEnd_toStartOf="@+id/btnBack"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/AddCost" />
+        app:layout_constraintTop_toBottomOf="@+id/btnAddPhoto" />
 
     <android.widget.Button
         android:id="@+id/btnBack"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="60dp"
         android:background="@drawable/btn_background"
         android:onClick="GoViewData"
         android:text="@string/Back"
@@ -76,7 +76,7 @@
         app:layout_constraintBottom_toTopOf="@+id/btnDelete"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btnAddData"
-        app:layout_constraintTop_toBottomOf="@+id/AddCost" />
+        app:layout_constraintTop_toBottomOf="@+id/btnAddPhoto" />
 
     <TextView
         android:id="@+id/txtHeader"
@@ -96,13 +96,32 @@
         android:id="@+id/btnDelete"
         android:layout_width="180dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/btn_background"
         android:onClick="DeleteData"
         android:text="@string/Delete"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgPhoto" />
+
+    <ImageView
+        android:id="@+id/imgPhoto"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnAddPhoto"
+        app:layout_constraintTop_toBottomOf="@+id/AddCost" />
+
+    <Button
+        android:id="@+id/btnAddPhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="@string/AddPhoto"
+        app:layout_constraintEnd_toStartOf="@+id/imgPhoto"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/AddCost" />
 

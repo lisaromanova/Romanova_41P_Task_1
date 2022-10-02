@@ -12,4 +12,7 @@
     <string name="Delete">Удалить запись</string>
     <string name="AddBook">Добавление книги</string>
     <string name="GoToBook">--></string>
+    <string name="AddPhoto">Выбрать фото</string>
+    <string name="Search">Поиск</string>
+    <string name="Clear">Сброс</string>
 </resources>

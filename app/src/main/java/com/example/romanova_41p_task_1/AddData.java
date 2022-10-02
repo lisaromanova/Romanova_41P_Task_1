@@ -1,16 +1,23 @@
 package com.example.romanova_41p_task_1;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -118,7 +125,21 @@ public class AddData extends AppCompatActivity {
             Toast.makeText(this, "Ошибка", Toast.LENGTH_LONG).show();
         }
     }
+    private final ActivityResultLauncher<Intent> pickImg = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            if (result.getData() != null) {
+                Uri uri = result.getData().getData();
+                try {
+                    InputStream is = getContentResolver().openInputStream(uri);
+                    Bitmap bitmap = BitmapFactory.decodeStream(is);
+                    ImageView imageView = findViewById(R.id.imgPhoto);
+                    imageView.setImageBitmap(bitmap);
+                } catch (Exception e) {
 
+                }
+            }
+        }
+    });
 
     public void GoViewData(View v){
         id=0;
