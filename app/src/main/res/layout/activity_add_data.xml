@@ -115,12 +115,15 @@
         app:layout_constraintStart_toEndOf="@+id/btnAddPhoto"
         app:layout_constraintTop_toBottomOf="@+id/AddCost" />
 
-    <Button
+    <android.widget.Button
         android:id="@+id/btnAddPhoto"
-        android:layout_width="wrap_content"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
+        android:background="@drawable/btn_background"
+        android:onClick="SelectPhoto"
         android:text="@string/AddPhoto"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toStartOf="@+id/imgPhoto"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/AddCost" />
