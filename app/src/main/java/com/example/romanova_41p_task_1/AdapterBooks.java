@@ -56,14 +56,12 @@ public class AdapterBooks extends BaseAdapter{
         TextView Author = v.findViewById(R.id.txtAuthor);
         TextView Cost = v.findViewById(R.id.txtCost);
         ImageView Img = v.findViewById(R.id.img);
-        Button btnUpdate = v.findViewById(R.id.btnUpdate);
-
         Books book = booksList.get(i);
         Name_book.setText(book.getName_book());
         Author.setText(book.getAuthor());
         Cost.setText(Float.toString(book.getCost()));
         Img.setImageBitmap(getUserImage(book.getImage()));
-        btnUpdate.setOnClickListener(new View.OnClickListener() {
+        v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, AddData.class);

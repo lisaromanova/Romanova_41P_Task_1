@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         View v = findViewById(com.google.android.material.R.id.ghost_view);
         GetTextFromSql(v);
-        String[]items = {"Наименование","Автор", "Цена"};
+        String[]items = {"<по умолчанию>","Наименование","Автор", "Цена"};
         spinner = findViewById(R.id.spSort);
         ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -69,13 +69,13 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void Sort(View v){
         switch(spinner.getSelectedItemPosition()){
-            case 0:
+            case 1:
                 Collections.sort(data, Comparator.comparing(Books::getName_book));
                 break;
-            case 1:
+            case 2:
                 Collections.sort(data, Comparator.comparing(Books::getAuthor));
                 break;
-            case 2:
+            case 3:
                 Collections.sort(data, Comparator.comparing(Books::getCost));
                 break;
         }
