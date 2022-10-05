@@ -43,7 +43,6 @@ public class AddData extends AppCompatActivity {
                 etName.setText(book.getName_book());
                 etAuthor.setText(book.getAuthor());
                 etCost.setText(Float.toString(book.getCost()));
-
         }
         if (id != 0) {
             try {
