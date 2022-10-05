@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,11 +56,21 @@ public class AdapterBooks extends BaseAdapter{
         TextView Author = v.findViewById(R.id.txtAuthor);
         TextView Cost = v.findViewById(R.id.txtCost);
         ImageView Img = v.findViewById(R.id.img);
+        Button btnUpdate = v.findViewById(R.id.btnUpdate);
+
         Books book = booksList.get(i);
         Name_book.setText(book.getName_book());
         Author.setText(book.getAuthor());
         Cost.setText(Float.toString(book.getCost()));
         Img.setImageBitmap(getUserImage(book.getImage()));
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, AddData.class);
+                intent.putExtra(Books.class.getSimpleName(), book);
+                mContext.startActivity(intent);
+            }
+        });
         return v;
     }
 }

@@ -28,6 +28,7 @@ public class AddData extends AppCompatActivity {
     public static int id=0;
     Connection connection;
     String ConnectionResult="";
+    Books book;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,14 @@ public class AddData extends AppCompatActivity {
         EditText etName = findViewById(R.id.AddName);
         EditText etAuthor = findViewById(R.id.AddAuthor);
         EditText etCost = findViewById(R.id.AddCost);
+        Bundle arg = getIntent().getExtras();
+        if(arg!=null){
+            book = arg.getParcelable(Books.class.getSimpleName());
+                etName.setText(book.getName_book());
+                etAuthor.setText(book.getAuthor());
+                etCost.setText(Float.toString(book.getCost()));
+
+        }
         if (id != 0) {
             try {
                 TextView Header = findViewById(R.id.txtHeader);

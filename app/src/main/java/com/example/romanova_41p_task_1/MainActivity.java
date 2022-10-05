@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -35,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
     Connection connection;
     Spinner spinner;
     List<Books> data;
-    List<Books> sort;
     ListView lstView;
     AdapterBooks adapterBooks;
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -58,9 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
-                // your code here
             }
-
         });
     }
     public void SetAdapter(List<Books> list){
@@ -70,34 +68,45 @@ public class MainActivity extends AppCompatActivity {
     }
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void Sort(View v){
-        sort = data;
         switch(spinner.getSelectedItemPosition()){
             case 0:
-                Collections.sort(sort, Comparator.comparing(Books::getName_book));
+                Collections.sort(data, Comparator.comparing(Books::getName_book));
                 break;
             case 1:
-                Collections.sort(sort, Comparator.comparing(Books::getAuthor));
+                Collections.sort(data, Comparator.comparing(Books::getAuthor));
                 break;
             case 2:
-                Collections.sort(sort, Comparator.comparing(Books::getCost));
+                Collections.sort(data, Comparator.comparing(Books::getCost));
                 break;
         }
-       SetAdapter(sort);
+       SetAdapter(data);
     }
-
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void Search(View v) {
-
+        data.clear();
+        EditText etSearch = findViewById(R.id.etSearchName);
+        AddItemToList(v, data, "Select * From Books Where Name_book Like '"+etSearch.getText().toString()+"%'");
+        Sort(v);
+    }
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void ClearFilter(View v){
+        data.clear();
+        EditText etSearch = findViewById(R.id.etSearchName);
+        AddItemToList(v, data, "Select * From Books");
+        etSearch.setText("");
+        Sort(v);
     }
     public void GoAddData(View v){
+        AddData.id=0;
         startActivity(new Intent(this, AddData.class));
     }
-    public void AddItemToList(View v) {
+    public void AddItemToList(View v, List<Books> list, String s) {
         try {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             connection = connectionHelper.connectionClass();
             if (connection != null) {
                 Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery("Select * From Books");
+                ResultSet resultSet = statement.executeQuery(s);
                 while (resultSet.next()) {
                     Books tempBook = new Books
                             (
@@ -107,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                                     Float.parseFloat(resultSet.getString("Price")),
                                     resultSet.getString("Image")
                             );
-                    data.add(tempBook);
+                    list.add(tempBook);
                 }
                 connection.close();
             }
@@ -117,81 +126,9 @@ public class MainActivity extends AppCompatActivity {
     }
     public void GetTextFromSql(View v){
         data = new ArrayList<Books>();
-        AddItemToList(v);
+        AddItemToList(v, data, "Select * From Books");
         lstView = findViewById(R.id.listBooks);
         SetAdapter(data);
-
-        /*TableLayout Books = findViewById(R.id.tbBooks);
-
-        try{
-            ConnectionHelper connectionHelper = new ConnectionHelper();
-            connection = connectionHelper.connectionClass();
-            Books.removeAllViews();
-            TableRow trHeader = new TableRow(MainActivity.this);
-            TextView NameHeader = new TextView(MainActivity.this);
-            NameHeader.setWidth(330);
-            TextView AuthorHeader = new TextView(MainActivity.this);
-            AuthorHeader.setWidth(210);
-            TextView CostHeader = new TextView(MainActivity.this);
-            CostHeader.setWidth(150);
-            TextView btnHeader = new TextView(MainActivity.this);
-            trHeader.setMinimumHeight(100);
-            NameHeader.setText("Название");
-            AuthorHeader.setText("Автор");
-            CostHeader.setText("Цена");
-            btnHeader.setText("Перейти");
-            trHeader.addView(NameHeader);
-            trHeader.addView(AuthorHeader);
-            trHeader.addView(CostHeader);
-            trHeader.addView(btnHeader);
-            Books.addView(trHeader);
-            if(connection!=null){
-                String query = "Select * From Books";
-                Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery(query);
-                while(resultSet.next()){
-                    TableRow tr = new TableRow(MainActivity.this);
-                    tr.setLayoutParams(new TableRow.LayoutParams(
-                            TableRow.LayoutParams.WRAP_CONTENT,TableRow.LayoutParams.WRAP_CONTENT));
-                    tr.setMinimumHeight(150);
-                    TextView Name = new TextView(MainActivity.this);
-                    Name.setWidth(330);
-                    TextView Author = new TextView(MainActivity.this);
-                    Author.setWidth(210);
-                    TextView Cost = new TextView(MainActivity.this);
-                    Cost.setWidth(150);
-                    Button btnUpdate = new Button(MainActivity.this);
-                    Resources resources = getResources();
-                    btnUpdate.setBackground(resources.getDrawable(R.drawable.btn_background));
-                    btnUpdate.setText("-->");
-                    tr.addView(Name);
-                    tr.addView(Author);
-                    tr.addView(Cost);
-                    tr.addView(btnUpdate);
-                    btnUpdate.setTextColor(resources.getColor(R.color.white));
-                    int id = Integer.parseInt(resultSet.getString(1));
-                    btnUpdate.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            AddData.id = id;
-                            GoAddData(view);
-                        }
-                    });
-                    Books.addView(tr);
-
-                    Name.setText(resultSet.getString(2));
-                    Author.setText(resultSet.getString(3));
-                    Cost.setText(resultSet.getString(4));
-
-                }
-            }
-            else{
-                ConnectionResult="Check Connection";
-            }
-        }
-        catch(Exception ex){
-            Log.e(ConnectionResult, ex.getMessage());
-        }*/
     }
 
 }
