@@ -36,33 +36,31 @@ public class AddData extends AppCompatActivity {
         EditText etName = findViewById(R.id.AddName);
         EditText etAuthor = findViewById(R.id.AddAuthor);
         EditText etCost = findViewById(R.id.AddCost);
-        if(id!=0){
-            try{
+        if (id != 0) {
+            try {
                 TextView Header = findViewById(R.id.txtHeader);
                 Header.setText("Изменение данных");
                 Button btnAdd = findViewById(R.id.btnAddData);
                 btnAdd.setText("Изменить");
                 ConnectionHelper connectionHelper = new ConnectionHelper();
                 connection = connectionHelper.connectionClass();
-                if(connection!=null){
-                    String query = "Select Name_book, Author, Price From Books Where ID_book = "+id;
+                if (connection != null) {
+                    String query = "Select Name_book, Author, Price From Books Where ID_book = " + id;
                     Statement statement = connection.createStatement();
                     ResultSet resultSet = statement.executeQuery(query);
-                    while(resultSet.next()){
+                    while (resultSet.next()) {
                         etName.setText(resultSet.getString(1));
                         etAuthor.setText(resultSet.getString(2));
                         etCost.setText(resultSet.getString(3));
                     }
+                } else {
+                    ConnectionResult = "Check connection";
                 }
-                else{
-                    ConnectionResult="Check connection";
-                }
-            }
-            catch(Exception ex){
+            } catch (Exception ex) {
                 Log.e(ConnectionResult, ex.getMessage());
                 Toast.makeText(this, "Ошибка", Toast.LENGTH_LONG).show();
             }
-        }else{
+        } else {
             Button btnDelete = findViewById(R.id.btnDelete);
             btnDelete.setVisibility(View.INVISIBLE);
         }
@@ -72,35 +70,35 @@ public class AddData extends AppCompatActivity {
         EditText etName = findViewById(R.id.AddName);
         EditText etAuthor = findViewById(R.id.AddAuthor);
         EditText etCost = findViewById(R.id.AddCost);
-
+        Toast.makeText(this, etName.getText().toString(), Toast.LENGTH_LONG).show();
             try{
-                String Name = etName.getText().toString();
-                String Author = etAuthor.getText().toString();
-                float Cost = Float.parseFloat(etCost.getText().toString());
-                ConnectionHelper connectionHelper = new ConnectionHelper();
-                connection = connectionHelper.connectionClass();
-                if(connection!=null){
-                    if(id!=0){
-                        String query = "Update Books Set Name_book = '"+Name+"', Author = '"+Author+"', Price = "+ Cost+" Where ID_book = "+id;
-                        Statement statement = connection.createStatement();
-                        statement.executeUpdate(query);
-                        Toast.makeText(this, "Данные успешно изменены!", Toast.LENGTH_LONG).show();
-                        GoViewData(v);
+                    String Name = etName.getText().toString();
+                    String Author = etAuthor.getText().toString();
+                    float Cost = Float.parseFloat(etCost.getText().toString());
+                    ConnectionHelper connectionHelper = new ConnectionHelper();
+                    connection = connectionHelper.connectionClass();
+                    if(connection!=null){
+                        if(id!=0){
+                            String query = "Update Books Set Name_book = '"+Name+"', Author = '"+Author+"', Price = "+ Cost+" Where ID_book = "+id;
+                            Statement statement = connection.createStatement();
+                            statement.executeUpdate(query);
+                            Toast.makeText(this, "Данные успешно изменены!", Toast.LENGTH_LONG).show();
+                            GoViewData(v);
+                        }
+                        else{
+                            String query = "Insert into Books Values('"+Name+"', '"+Author+"', "+Cost+");";
+                            Statement statement = connection.createStatement();
+                            statement.executeUpdate(query);
+                            etName.setText("");
+                            etAuthor.setText("");
+                            etCost.setText("");
+                            Toast.makeText(this, "Данные успешно добавлены!", Toast.LENGTH_LONG).show();
+                        }
+
                     }
                     else{
-                        String query = "Insert into Books Values('"+Name+"', '"+Author+"', "+Cost+");";
-                        Statement statement = connection.createStatement();
-                        statement.executeUpdate(query);
-                        etName.setText("");
-                        etAuthor.setText("");
-                        etCost.setText("");
-                        Toast.makeText(this, "Данные успешно добавлены!", Toast.LENGTH_LONG).show();
+                        ConnectionResult="Check connection";
                     }
-
-                }
-                else{
-                    ConnectionResult="Check connection";
-                }
             }
             catch(Exception ex){
                 Log.e(ConnectionResult, ex.getMessage());
@@ -143,7 +141,6 @@ public class AddData extends AppCompatActivity {
             }
         }
     });
-
 
     public void GoViewData(View v){
         id=0;

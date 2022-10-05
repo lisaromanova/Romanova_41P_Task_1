@@ -1,13 +1,16 @@
 package com.example.romanova_41p_task_1;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -16,61 +19,108 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.net.IDN;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity {
     Connection connection;
+    Spinner spinner;
+    List<Books> data;
+    List<Books> sort;
+    ListView lstView;
+    AdapterBooks adapterBooks;
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         View v = findViewById(com.google.android.material.R.id.ghost_view);
         GetTextFromSql(v);
-        String[]items = {"Автор", "Цена"};
-        Spinner spinner = findViewById(R.id.spSort);
+        String[]items = {"Наименование","Автор", "Цена"};
+        spinner = findViewById(R.id.spSort);
         ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                Sort(v);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+    }
+    public void SetAdapter(List<Books> list){
+        adapterBooks = new AdapterBooks(MainActivity.this,list);
+        adapterBooks.notifyDataSetInvalidated();
+        lstView.setAdapter(adapterBooks);
+    }
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void Sort(View v){
+        sort = data;
+        switch(spinner.getSelectedItemPosition()){
+            case 0:
+                Collections.sort(sort, Comparator.comparing(Books::getName_book));
+                break;
+            case 1:
+                Collections.sort(sort, Comparator.comparing(Books::getAuthor));
+                break;
+            case 2:
+                Collections.sort(sort, Comparator.comparing(Books::getCost));
+                break;
+        }
+       SetAdapter(sort);
     }
 
+    public void Search(View v) {
+
+    }
     public void GoAddData(View v){
         startActivity(new Intent(this, AddData.class));
     }
-    public void GetTextFromSql(View v){
-        List<Books> data = new ArrayList<Books>();
-        ListView lstView = findViewById(R.id.listBooks);
-        AdapterBooks adapterBooks = new AdapterBooks(MainActivity.this,data);
-        try{
+    public void AddItemToList(View v) {
+        try {
             ConnectionHelper connectionHelper = new ConnectionHelper();
             connection = connectionHelper.connectionClass();
-            if(connection!=null){
+            if (connection != null) {
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery("Select * From Books");
-                while(resultSet.next()){
+                while (resultSet.next()) {
                     Books tempBook = new Books
                             (
-                           Integer.parseInt(resultSet.getString("ID_book")),
-                           resultSet.getString("Name_book"),
-                            resultSet.getString("Author"),
-                            Float.parseFloat(resultSet.getString("Price")),
-                            resultSet.getString("Image")
-                    );
+                                    Integer.parseInt(resultSet.getString("ID_book")),
+                                    resultSet.getString("Name_book"),
+                                    resultSet.getString("Author"),
+                                    Float.parseFloat(resultSet.getString("Price")),
+                                    resultSet.getString("Image")
+                            );
                     data.add(tempBook);
-                    adapterBooks.notifyDataSetInvalidated();
                 }
                 connection.close();
             }
-            lstView.setAdapter(adapterBooks);
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
 
         }
+    }
+    public void GetTextFromSql(View v){
+        data = new ArrayList<Books>();
+        AddItemToList(v);
+        lstView = findViewById(R.id.listBooks);
+        SetAdapter(data);
+
         /*TableLayout Books = findViewById(R.id.tbBooks);
 
         try{

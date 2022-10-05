@@ -77,6 +77,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:background="@drawable/btn_background"
+        android:onClick="Sort"
         android:text="@string/Search"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/listBooks"
