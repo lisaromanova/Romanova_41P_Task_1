@@ -35,6 +35,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     Connection connection;
     Spinner spinner;
+    List<Books> list;
     List<Books> data;
     ListView lstView;
     AdapterBooks adapterBooks;
@@ -69,6 +70,9 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void Sort(View v){
         switch(spinner.getSelectedItemPosition()){
+            case 0:
+                data = list;
+                break;
             case 1:
                 Collections.sort(data, Comparator.comparing(Books::getName_book));
                 break;
@@ -94,10 +98,10 @@ public class MainActivity extends AppCompatActivity {
         EditText etSearch = findViewById(R.id.etSearchName);
         AddItemToList(v, data, "Select * From Books");
         etSearch.setText("");
+        spinner.setSelection(0);
         Sort(v);
     }
     public void GoAddData(View v){
-        AddData.id=0;
         startActivity(new Intent(this, AddData.class));
     }
     public void AddItemToList(View v, List<Books> list, String s) {
@@ -121,12 +125,13 @@ public class MainActivity extends AppCompatActivity {
                 connection.close();
             }
         } catch (Exception ex) {
-
+            Log.e(ex.toString(), ex.getMessage());
         }
     }
     public void GetTextFromSql(View v){
-        data = new ArrayList<Books>();
-        AddItemToList(v, data, "Select * From Books");
+        list = new ArrayList<Books>();
+        AddItemToList(v, list, "Select * From Books");
+        data=list;
         lstView = findViewById(R.id.listBooks);
         SetAdapter(data);
     }

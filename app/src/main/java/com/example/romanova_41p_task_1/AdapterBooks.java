@@ -39,16 +39,6 @@ public class AdapterBooks extends BaseAdapter{
         return booksList.get(i).getId();
     }
 
-    private Bitmap getUserImage(String encodedImg)
-    {
-        if(encodedImg!=null&& !encodedImg.equals("null")) {
-            byte[] bytes = Base64.decode(encodedImg, Base64.DEFAULT);
-            return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-        }
-        else
-            return BitmapFactory.decodeResource(AdapterBooks.this.mContext.getResources(), R.drawable.picture);
-    }
-
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         View v = View.inflate(mContext,R.layout.item_book,null);
@@ -60,7 +50,8 @@ public class AdapterBooks extends BaseAdapter{
         Name_book.setText(book.getName_book());
         Author.setText(book.getAuthor());
         Cost.setText(Float.toString(book.getCost()));
-        Img.setImageBitmap(getUserImage(book.getImage()));
+        MethodsBooks m = new MethodsBooks(mContext);
+        Img.setImageBitmap(m.getUserImage(book.getImage()));
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -8,8 +8,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import java.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -25,114 +28,130 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class AddData extends AppCompatActivity {
-    public static int id=0;
     Connection connection;
-    String ConnectionResult="";
     Books book;
-
+    Bundle arg;
+    ImageView img;
+    Bitmap bitmap=null, b;
+    EditText etName, etAuthor, etCost;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_data);
-        EditText etName = findViewById(R.id.AddName);
-        EditText etAuthor = findViewById(R.id.AddAuthor);
-        EditText etCost = findViewById(R.id.AddCost);
-        Bundle arg = getIntent().getExtras();
-        if(arg!=null){
+        etName = findViewById(R.id.AddName);
+        etAuthor = findViewById(R.id.AddAuthor);
+        etCost = findViewById(R.id.AddCost);
+        img = findViewById(R.id.imgPhoto);
+        arg = getIntent().getExtras();
+        b = BitmapFactory.decodeResource(AddData.this.getResources(), R.drawable.picture);
+        if(arg!=null) {
+            TextView Header = findViewById(R.id.txtHeader);
+            Header.setText("Изменение данных");
+            Button btnAdd = findViewById(R.id.btnAddData);
+            btnAdd.setText("Изменить");
             book = arg.getParcelable(Books.class.getSimpleName());
-                etName.setText(book.getName_book());
-                etAuthor.setText(book.getAuthor());
-                etCost.setText(Float.toString(book.getCost()));
-        }
-        if (id != 0) {
-            try {
-                TextView Header = findViewById(R.id.txtHeader);
-                Header.setText("Изменение данных");
-                Button btnAdd = findViewById(R.id.btnAddData);
-                btnAdd.setText("Изменить");
-                ConnectionHelper connectionHelper = new ConnectionHelper();
-                connection = connectionHelper.connectionClass();
-                if (connection != null) {
-                    String query = "Select Name_book, Author, Price From Books Where ID_book = " + id;
-                    Statement statement = connection.createStatement();
-                    ResultSet resultSet = statement.executeQuery(query);
-                    while (resultSet.next()) {
-                        etName.setText(resultSet.getString(1));
-                        etAuthor.setText(resultSet.getString(2));
-                        etCost.setText(resultSet.getString(3));
-                    }
-                } else {
-                    ConnectionResult = "Check connection";
-                }
-            } catch (Exception ex) {
-                Log.e(ConnectionResult, ex.getMessage());
-                Toast.makeText(this, "Ошибка", Toast.LENGTH_LONG).show();
+            etName.setText(book.getName_book());
+            etAuthor.setText(book.getAuthor());
+            etCost.setText(Float.toString(book.getCost()));
+            MethodsBooks m = new MethodsBooks(AddData.this);
+            if (book.getImage() == null) {
+                img.setImageBitmap(b);
+            } else {
+                bitmap = m.getUserImage(book.getImage());
+                img.setImageBitmap(bitmap);
             }
-        } else {
+        }
+        else{
+            img.setImageBitmap(b);
             Button btnDelete = findViewById(R.id.btnDelete);
             btnDelete.setVisibility(View.INVISIBLE);
         }
     }
 
-    public void AddDataMethod(View v){
-        EditText etName = findViewById(R.id.AddName);
-        EditText etAuthor = findViewById(R.id.AddAuthor);
-        EditText etCost = findViewById(R.id.AddCost);
-        Toast.makeText(this, etName.getText().toString(), Toast.LENGTH_LONG).show();
-            try{
-                    String Name = etName.getText().toString();
-                    String Author = etAuthor.getText().toString();
-                    float Cost = Float.parseFloat(etCost.getText().toString());
-                    ConnectionHelper connectionHelper = new ConnectionHelper();
-                    connection = connectionHelper.connectionClass();
-                    if(connection!=null){
-                        if(id!=0){
-                            String query = "Update Books Set Name_book = '"+Name+"', Author = '"+Author+"', Price = "+ Cost+" Where ID_book = "+id;
-                            Statement statement = connection.createStatement();
-                            statement.executeUpdate(query);
-                            Toast.makeText(this, "Данные успешно изменены!", Toast.LENGTH_LONG).show();
-                            GoViewData(v);
-                        }
-                        else{
-                            String query = "Insert into Books Values('"+Name+"', '"+Author+"', "+Cost+");";
-                            Statement statement = connection.createStatement();
-                            statement.executeUpdate(query);
-                            etName.setText("");
-                            etAuthor.setText("");
-                            etCost.setText("");
-                            Toast.makeText(this, "Данные успешно добавлены!", Toast.LENGTH_LONG).show();
-                        }
+    private String encodeImage(Bitmap bitmap) {
+        int prevW = 150;
+        int prevH = bitmap.getHeight() * prevW / bitmap.getWidth();
+        Bitmap b = Bitmap.createScaledBitmap(bitmap, prevW, prevH, false);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        b.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
+        byte[] bytes = byteArrayOutputStream.toByteArray();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return Base64.getEncoder().encodeToString(bytes);
+        }
+        else{
+            return "";
+        }
+    }
 
-                    }
-                    else{
-                        ConnectionResult="Check connection";
-                    }
+    private String Image(){
+        if(bitmap==null){
+            return "NULL";
+        }
+        else{
+            String img = encodeImage(bitmap);
+            return "'"+ img+"'";
+        }
+    }
+
+    private boolean Check(EditText Name, EditText Author, EditText Cost){
+        if(Name.getText().toString().isEmpty())  {
+            Toast.makeText(this, "Заполните поле Наименование", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        else {
+            if(Author.getText().toString().isEmpty()){
+                Toast.makeText(this, "Заполните поле Автор", Toast.LENGTH_LONG).show();
+                return false;
             }
-            catch(Exception ex){
-                Log.e(ConnectionResult, ex.getMessage());
-                Toast.makeText(this, "Ошибка", Toast.LENGTH_LONG).show();
+            else {
+                if (Cost.getText().toString().isEmpty()) {
+                    Toast.makeText(this, "Заполните поле Стоимость", Toast.LENGTH_LONG).show();
+                    return false;
+                }
+                else{
+                    return true;
+                }
             }
+        }
+    }
+
+
+    public void AddDataMethod(View v) {
+        if (Check(etName, etAuthor, etCost))
+        {
+            String Name = etName.getText().toString();
+            String Author = etAuthor.getText().toString();
+            float Cost = Float.parseFloat(etCost.getText().toString());
+            if (arg != null) {
+                String query = "Update Books Set Name_book = '" + Name + "', Author = '" + Author + "', Price = " + Cost + ", Image="+Image()+" Where ID_book = " + book.getId();
+                ExecuteQuerySql(v, query, "Данные успешно изменены!");
+            } else {
+                String query = "Insert into Books Values('" + Name + "', '" + Author + "', " + Cost + ", "+Image()+");";
+                ExecuteQuerySql(v, query, "Данные успешно добавлены!");
+            }
+        }
+    }
+
+    public void ExecuteQuerySql(View v, String query, String s) {
+        try {
+            ConnectionHelper connectionHelper = new ConnectionHelper();
+            connection = connectionHelper.connectionClass();
+            if (connection != null) {
+                Statement statement = connection.createStatement();
+                statement.executeUpdate(query);
+                connection.close();
+                Toast.makeText(this, s, Toast.LENGTH_LONG).show();
+                GoViewData(v);
+            }
+        } catch (Exception ex) {
+            Log.e(ex.toString(), ex.getMessage());
+            Toast.makeText(this, "Ошибка", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void DeleteData(View v){
-        try{
-            ConnectionHelper connectionHelper = new ConnectionHelper();
-            connection = connectionHelper.connectionClass();
-            if(connection!=null){
-                String query = "Delete From Books Where ID_book="+id;
-                Statement statement = connection.createStatement();
-                statement.executeUpdate(query);
-                Toast.makeText(this, "Запись успешно удалена!", Toast.LENGTH_LONG).show();
-                GoViewData(v);
-            }
-            else{
-                ConnectionResult="Check connection";
-            }
-        }
-        catch(Exception ex){
-            Log.e(ConnectionResult, ex.getMessage());
-            Toast.makeText(this, "Ошибка", Toast.LENGTH_LONG).show();
-        }
+        String s = "Delete From Books Where ID_book="+ book.getId();
+        ExecuteQuerySql(v, s, "Запись успешно удалена");
     }
     private final ActivityResultLauncher<Intent> pickImg = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
@@ -140,18 +159,16 @@ public class AddData extends AppCompatActivity {
                 Uri uri = result.getData().getData();
                 try {
                     InputStream is = getContentResolver().openInputStream(uri);
-                    Bitmap bitmap = BitmapFactory.decodeStream(is);
-                    ImageView imageView = findViewById(R.id.imgPhoto);
-                    imageView.setImageBitmap(bitmap);
+                    bitmap = BitmapFactory.decodeStream(is);
+                    img.setImageBitmap(bitmap);
                 } catch (Exception e) {
-
+                    Log.e(e.toString(), e.getMessage());
                 }
             }
         }
     });
 
     public void GoViewData(View v){
-        id=0;
         startActivity(new Intent(this, MainActivity.class));
     }
     public void SelectPhoto(View v){

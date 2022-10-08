@@ -11,13 +11,12 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginEnd="20dp"
         android:gravity="start|top"
         android:hint="@string/NameBook"
         android:inputType="textMultiLine"
         app:layout_constraintBottom_toTopOf="@+id/AddAuthor"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imgPhoto"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtHeader" />
 
@@ -26,13 +25,12 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginEnd="20dp"
         android:gravity="start|top"
         android:hint="@string/Author"
         android:inputType="textMultiLine"
         app:layout_constraintBottom_toTopOf="@+id/AddCost"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imgPhoto"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/AddName" />
 
@@ -41,12 +39,12 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginEnd="20dp"
         android:ems="10"
         android:hint="@string/Cost"
         android:inputType="numberDecimal"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnAddData"
+        app:layout_constraintEnd_toStartOf="@+id/imgPhoto"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/AddAuthor" />
 
@@ -54,7 +52,6 @@
         android:id="@+id/btnAddData"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
         android:background="@drawable/btn_background"
         android:onClick="AddDataMethod"
         android:text="@string/EnterData"
@@ -62,13 +59,12 @@
         app:layout_constraintBottom_toTopOf="@+id/btnDelete"
         app:layout_constraintEnd_toStartOf="@+id/btnBack"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnAddPhoto" />
+        app:layout_constraintTop_toBottomOf="@+id/AddCost" />
 
     <android.widget.Button
         android:id="@+id/btnBack"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
         android:background="@drawable/btn_background"
         android:onClick="GoViewData"
         android:text="@string/Back"
@@ -76,13 +72,12 @@
         app:layout_constraintBottom_toTopOf="@+id/btnDelete"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btnAddData"
-        app:layout_constraintTop_toBottomOf="@+id/btnAddPhoto" />
+        app:layout_constraintTop_toBottomOf="@+id/AddCost" />
 
     <TextView
         android:id="@+id/txtHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
         android:fontFamily="sans-serif"
         android:text="@string/AddBook"
         android:textSize="20sp"
@@ -96,7 +91,6 @@
         android:id="@+id/btnDelete"
         android:layout_width="180dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:background="@drawable/btn_background"
         android:onClick="DeleteData"
         android:text="@string/Delete"
@@ -104,28 +98,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgPhoto" />
+        app:layout_constraintTop_toBottomOf="@+id/btnAddData" />
 
     <ImageView
         android:id="@+id/imgPhoto"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnAddPhoto"
-        app:layout_constraintTop_toBottomOf="@+id/AddCost" />
-
-    <android.widget.Button
-        android:id="@+id/btnAddPhoto"
         android:layout_width="130dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:background="@drawable/btn_background"
+        android:layout_height="130dp"
+        android:layout_marginEnd="30dp"
         android:onClick="SelectPhoto"
-        android:text="@string/AddPhoto"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toStartOf="@+id/imgPhoto"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/AddCost" />
+        app:layout_constraintBottom_toTopOf="@+id/btnBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/AddAuthor"
+        app:layout_constraintTop_toBottomOf="@+id/txtHeader" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
