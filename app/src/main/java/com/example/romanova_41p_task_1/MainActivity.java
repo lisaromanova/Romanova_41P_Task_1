@@ -35,10 +35,10 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     Connection connection;
     Spinner spinner;
-    List<Books> list;
     List<Books> data;
     ListView lstView;
     AdapterBooks adapterBooks;
+    EditText etSearch;
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         GetTextFromSql(v);
         String[]items = {"<по умолчанию>","Наименование","Автор", "Цена"};
         spinner = findViewById(R.id.spSort);
+        etSearch = findViewById(R.id.etSearchName);
         ArrayAdapter<String> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -71,7 +72,8 @@ public class MainActivity extends AppCompatActivity {
     public void Sort(View v){
         switch(spinner.getSelectedItemPosition()){
             case 0:
-                data = list;
+                data.clear();
+                AddItemToList(v, data, "Select * From Books Where Name_book Like '"+etSearch.getText().toString()+"%'");
                 break;
             case 1:
                 Collections.sort(data, Comparator.comparing(Books::getName_book));
@@ -88,15 +90,11 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void Search(View v) {
         data.clear();
-        EditText etSearch = findViewById(R.id.etSearchName);
         AddItemToList(v, data, "Select * From Books Where Name_book Like '"+etSearch.getText().toString()+"%'");
         Sort(v);
     }
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void ClearFilter(View v){
-        data.clear();
-        EditText etSearch = findViewById(R.id.etSearchName);
-        AddItemToList(v, data, "Select * From Books");
         etSearch.setText("");
         spinner.setSelection(0);
         Sort(v);
@@ -129,9 +127,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public void GetTextFromSql(View v){
-        list = new ArrayList<Books>();
-        AddItemToList(v, list, "Select * From Books");
-        data=list;
+        data = new ArrayList<Books>();
+        AddItemToList(v, data, "Select * From Books");
         lstView = findViewById(R.id.listBooks);
         SetAdapter(data);
     }
